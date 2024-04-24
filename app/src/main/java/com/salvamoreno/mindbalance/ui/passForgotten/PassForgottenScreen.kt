@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.BackIcon
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.DNITextField
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.EmailTextField
@@ -26,7 +25,8 @@ import com.salvamoreno.mindbalance.ui.theme.loginPrimary
 
 @Composable
 fun PassForgottenScreen(
-    passForgottenViewModel: PassForgottenViewModel = hiltViewModel(),
+    passForgottenViewModel: PassForgottenViewModel,
+    onBack: () -> Unit,
     onIdentityConfirmed: () -> Unit
 ) {
     var emailValue by remember {
@@ -58,7 +58,9 @@ fun PassForgottenScreen(
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            BackIcon()
+            BackIcon(
+                onBack
+            )
             Column(
                 verticalArrangement = Arrangement.spacedBy(2.dp),
                 modifier = Modifier.padding(top = 8.dp)
@@ -93,16 +95,8 @@ fun PassForgottenScreen(
                 NormalButton(text = "Confirmar identidad") {
                     passForgottenViewModel.onConfirmIdentity(emailValue, dniValue)
                     onIdentityConfirmed()
-                    // ELIMINAR ESTA PARTE
-                    onConfirmIdentity(emailValue, dniValue)
                 }
             }
         }
     }
-}
-
-fun onConfirmIdentity(email: String, dni: String) {
-    println("Se llama al viewModel para que llame al Repository y haga la llamada")
-    println(email)
-    println(dni)
 }

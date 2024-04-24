@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.outlined.CreditCard
@@ -25,7 +27,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.salvamoreno.mindbalance.R
@@ -39,6 +46,8 @@ fun EmailTextField(
     label: String = "Email",
     leadingIcon: ImageVector = Icons.Outlined.PermIdentity
 ) {
+    val focusManager = LocalFocusManager.current
+
     Box(modifier = Modifier
         .height(64.dp)
         .fillMaxWidth()
@@ -62,6 +71,15 @@ fun EmailTextField(
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = loginSecondary
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
             )
         )
     }
@@ -74,6 +92,8 @@ fun DNITextField(
     label: String = "DNI",
     leadingIcon: ImageVector = Icons.Outlined.CreditCard
 ) {
+    val focusManager = LocalFocusManager.current
+
     Box(modifier = Modifier
         .height(64.dp)
         .fillMaxWidth()
@@ -97,6 +117,15 @@ fun DNITextField(
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 focusedLabelColor = loginSecondary
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Text,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
             )
         )
     }
@@ -109,48 +138,72 @@ fun PasswordTextField(
     label: String = "Contraseña",
     leadingIcon: ImageVector = Icons.Filled.Lock
 ) {
+    val focusManager = LocalFocusManager.current
     var isPasswordVisible by remember {
         mutableStateOf(false)
     }
 
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(text = label) },
-        leadingIcon = { Icon(imageVector = leadingIcon, contentDescription = "DNI Icon")},
-        trailingIcon = {
-            IconButton(onClick = {
-                isPasswordVisible = !isPasswordVisible
-            }) {
-
-                val visibleIconAndText = Pair(
-                    first = Icons.Outlined.Visibility,
-                    second = stringResource(id = R.string.icon_password_visible)
-                )
-
-                val hiddenIconAndText = Pair(
-                    first = Icons.Outlined.VisibilityOff,
-                    second = stringResource(id = R.string.icon_password_hidden)
-                )
-
-                val passwordVisibilityIconAndText =
-                    if (isPasswordVisible) visibleIconAndText else hiddenIconAndText
-
-                // Render Icon
-                Icon(
-                    imageVector = passwordVisibilityIconAndText.first,
-                    contentDescription = passwordVisibilityIconAndText.second
-                )
-            }
-        },
-        singleLine = true,
-        shape = RoundedCornerShape(6.dp),
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = loginSecondary,
-            disabledContainerColor = loginSecondary,
-            focusedContainerColor = loginTerciary
+    Box(modifier = Modifier
+        .height(64.dp)
+        .fillMaxWidth()
+        .background(
+            color = Color.Transparent,
+            shape = RoundedCornerShape(6.dp)
         )
-    )
+    ) {
+        TextField(
+            modifier = Modifier.fillMaxSize(),
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(text = label) },
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            leadingIcon = { Icon(imageVector = leadingIcon, contentDescription = "DNI Icon")},
+            trailingIcon = {
+                IconButton(onClick = {
+                    isPasswordVisible = !isPasswordVisible
+                }) {
+
+                    val visibleIconAndText = Pair(
+                        first = Icons.Outlined.Visibility,
+                        second = stringResource(id = R.string.icon_password_visible)
+                    )
+
+                    val hiddenIconAndText = Pair(
+                        first = Icons.Outlined.VisibilityOff,
+                        second = stringResource(id = R.string.icon_password_hidden)
+                    )
+
+                    val passwordVisibilityIconAndText =
+                        if (isPasswordVisible) visibleIconAndText else hiddenIconAndText
+
+                    // Render Icon
+                    Icon(
+                        imageVector = passwordVisibilityIconAndText.first,
+                        contentDescription = passwordVisibilityIconAndText.second
+                    )
+                }
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(6.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = loginSecondary,
+                disabledContainerColor = loginSecondary,
+                focusedContainerColor = loginTerciary,
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                focusedLabelColor = loginSecondary
+            ),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus()
+                }
+            )
+        )
+    }
 }
 
 @Preview

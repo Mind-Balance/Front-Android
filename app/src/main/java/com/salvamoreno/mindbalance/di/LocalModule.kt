@@ -4,6 +4,7 @@ import android.content.Context
 import com.salvamoreno.mindbalance.data.local.LocalDataSource
 import com.salvamoreno.mindbalance.data.local.LocalDataSourceInterface
 import com.salvamoreno.mindbalance.data.local.sharedPreferences.SharedPreferencesService
+import com.salvamoreno.mindbalance.di.annotations.LocalQualifier
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,6 +18,7 @@ class LocalModule {
     fun provideContext(@ApplicationContext context: Context): Context = context
 
     @Provides
+    @LocalQualifier
     fun provideSharedPreferencesManager(context: Context): SharedPreferencesService = SharedPreferencesService(context)
 
     @Provides

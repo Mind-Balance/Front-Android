@@ -1,31 +1,50 @@
 package com.salvamoreno.mindbalance.di
 
+import android.content.Context
+import com.salvamoreno.mindbalance.data.local.sharedPreferences.SharedPreferencesService
 import com.salvamoreno.mindbalance.data.remote.MindBalanceApi
+import com.salvamoreno.mindbalance.di.annotations.NetworkQualifier
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val API_KEY: String = "55618b9b-4447-4cde-bf22-42f62f01e6cd"
-const val API_URL: String = "http://127.0.0.1:8080/api/v1/"
+const val API_URL: String = "http://10.0.2.2:8080/"
 
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
     @Provides
-    fun providesOkHttpClient(): OkHttpClient {
+    fun provideContext(@ApplicationContext context: Context): Context = context
+
+    @Provides
+    @NetworkQualifier
+    fun provideSharedPreferencesManager(context: Context): SharedPreferencesService = SharedPreferencesService(context)
+
+    @Provides
+    fun providesOkHttpClient(sharedPreferencesService: SharedPreferencesService): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor { chain ->
-            val url = chain.request().url.newBuilder()
-                .build()
-            val request = chain.request().newBuilder()
-                .url(url)
-                .build()
-            chain.proceed(request)
+            val originalRequest = chain.request()
+            if (originalRequest.url.encodedPath.contains("identity")) {
+                val newRequest =
+                    originalRequest.newBuilder().addHeader("MindBalance-ApiKey", API_KEY).build()
+                chain.proceed(newRequest)
+            } else if (originalRequest.url.encodedPath.contains("forgotten")) {
+                val firstHeaderRequest =
+                    originalRequest.newBuilder().addHeader("MindBalance-ApiKey", API_KEY).build()
+                val accessToken = sharedPreferencesService.getAccessToken()
+                val secondHeaderRequest = firstHeaderRequest.newBuilder().addHeader("Authorization", "Bearer $accessToken").build()
+                chain.proceed(secondHeaderRequest)
+            } else {
+                chain.proceed(originalRequest)
+            }
         }.build()
     }
 
@@ -44,6 +63,6 @@ class NetworkModule {
     }
 
     @Provides
-    fun providesMarvelApi(retrofit: Retrofit): MindBalanceApi =
+    fun providesMindBalanceApi(retrofit: Retrofit): MindBalanceApi =
         retrofit.create(MindBalanceApi::class.java)
 }
