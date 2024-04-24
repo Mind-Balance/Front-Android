@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 const val API_KEY: String = "55618b9b-4447-4cde-bf22-42f62f01e6cd"
-const val API_URL: String = "http://127.0.0.1:8080/api/v1"
+const val API_URL: String = "http://127.0.0.1:8080/api/v1/"
 
 @Module
 @InstallIn(SingletonComponent::class)
