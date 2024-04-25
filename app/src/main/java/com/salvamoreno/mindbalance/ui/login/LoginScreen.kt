@@ -1,5 +1,6 @@
 package com.salvamoreno.mindbalance.ui.login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,7 +9,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,8 +23,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.salvamoreno.mindbalance.R
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.EmailTextField
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.NormalButton
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.PasswordTextField
@@ -74,28 +80,43 @@ fun LoginScreen(
                 )
             )
             .padding(16.dp)
-            .padding(top = 36.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(2.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 150.dp)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    text = "¡Hola! Qué gusto verte por aquí",
-                    color = Color.White,
-                    fontSize = 20.sp
-                )
-                Text(
-                    text = "Shhh... No se lo digas a tu jefe, pero aquí se viene a desconectar",
-                    color = Color.Gray,
-                    fontSize = 13.sp
-                )
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "",
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier.width(300.dp).height(200.dp)
+                    )
+                    Text(
+                        text = "¡Hola! Qué gusto verte por aquí",
+                        color = Color.White,
+                        fontSize = 20.sp,
+                    )
+                    Text(
+                        text = "Shhh... No se lo digas a tu jefe,",
+                        color = Color.LightGray,
+                        fontSize = 13.sp
+                    )
+                    Text(
+                        text = "pero aquí se viene a desconectar",
+                        color = Color.LightGray,
+                        fontSize = 13.sp
+                    )
+                }
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(24.dp),

@@ -1,6 +1,7 @@
 package com.salvamoreno.mindbalance.di
 
 import android.content.Context
+import android.util.Log
 import com.salvamoreno.mindbalance.data.local.sharedPreferences.SharedPreferencesService
 import com.salvamoreno.mindbalance.data.remote.MindBalanceApi
 import com.salvamoreno.mindbalance.di.annotations.NetworkQualifier

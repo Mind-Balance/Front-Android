@@ -64,7 +64,7 @@ class SharedPreferencesService @Inject constructor(@ApplicationContext private v
         return sharedPref.getString(key, defaultValue) ?: defaultValue
     }
 
-    fun savePassword(key: String = DNI_KEY, password: String) {
+    fun savePassword(key: String = PASSWORD_KEY, password: String) {
         with(sharedPref.edit()) {
             putString(key, password)
             commit()

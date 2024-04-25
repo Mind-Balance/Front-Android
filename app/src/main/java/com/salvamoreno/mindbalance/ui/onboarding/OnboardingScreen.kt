@@ -20,7 +20,7 @@ fun OnboardingScreen() {
                 loginSecondary
             )
     ) {
-        Text("Onboarding Screen", fontSize = 50.sp)
+        Text("Onboarding Screen", fontSize = 40.sp)
     }
 }
 

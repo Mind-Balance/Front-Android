@@ -81,7 +81,7 @@ fun ChangeForgottenPassScreen(
                 )
                 Text(
                     text = "Por favor, introduce la nueva contraseña y repítela para confirmarla",
-                    color = Color.Gray,
+                    color = Color.LightGray,
                     fontSize = 13.sp
                 )
             }

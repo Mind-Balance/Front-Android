@@ -15,6 +15,7 @@ import com.salvamoreno.mindbalance.ui.onboarding.OnboardingScreen
 import com.salvamoreno.mindbalance.ui.passForgotten.PassForgottenScreen
 import com.salvamoreno.mindbalance.ui.passForgotten.PassForgottenViewModel
 import com.salvamoreno.mindbalance.ui.successChangeForgottenPass.SuccessChangeForgottenPassScreen
+import com.salvamoreno.mindbalance.ui.successChangePassword.SuccessChangePasswordScreen
 
 @Composable
 fun MindBalanceAppNavigation(
@@ -42,6 +43,12 @@ fun MindBalanceAppNavigation(
         // CHANGE PASSWORD SCREEN
         composable(Routes.ChangePasswordScreen.route) {
             ChangePasswordScreen(changePasswordViewModel = changePasswordViewModel) {
+                navController.navigate(Routes.SuccessChangePassword.route)
+            }
+        }
+        // SUCCESS CHANGE PASSWORD SCREEN
+        composable(Routes.SuccessChangePassword.route) {
+            SuccessChangePasswordScreen {
                 navController.navigate(Routes.OnboardingScreen.route)
             }
         }
