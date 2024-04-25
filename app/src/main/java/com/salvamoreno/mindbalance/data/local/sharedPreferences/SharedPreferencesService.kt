@@ -11,6 +11,7 @@ class SharedPreferencesService @Inject constructor(@ApplicationContext private v
     private val REFRESH_TOKEN_KEY = "refreshTokenKey"
     private val EMAIL_KEY = "emailKey"
     private val DNI_KEY = "dniKey"
+    private val PASSWORD_KEY = "passwordKey"
 
     private val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -55,6 +56,17 @@ class SharedPreferencesService @Inject constructor(@ApplicationContext private v
     fun saveDNI(key: String = DNI_KEY, dni: String) {
         with(sharedPref.edit()) {
             putString(key, dni)
+            commit()
+        }
+    }
+
+    fun getPassword(key: String = PASSWORD_KEY, defaultValue: String = "No Password"): String {
+        return sharedPref.getString(key, defaultValue) ?: defaultValue
+    }
+
+    fun savePassword(key: String = DNI_KEY, password: String) {
+        with(sharedPref.edit()) {
+            putString(key, password)
             commit()
         }
     }

@@ -21,4 +21,7 @@ class LocalDataSource @Inject constructor(
     override fun saveDNI(dni: String) = sharedPreferencesService.saveDNI(dni = dni)
 
     override fun getDNI(): String = sharedPreferencesService.getDNI()
+    override fun savePassword(password: String) = sharedPreferencesService.savePassword(password = password)
+
+    override fun getPassword(): String = sharedPreferencesService.getPassword()
 }

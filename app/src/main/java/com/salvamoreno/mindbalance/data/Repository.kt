@@ -4,6 +4,7 @@ import com.salvamoreno.mindbalance.data.local.LocalDataSourceInterface
 import com.salvamoreno.mindbalance.data.local.sharedPreferences.SharedPreferencesService
 import com.salvamoreno.mindbalance.data.remote.RemoteDataSourceInterface
 import com.salvamoreno.mindbalance.data.remote.request.ChangeForgottenPassRequest
+import com.salvamoreno.mindbalance.data.remote.request.ChangePasswordRequest
 import com.salvamoreno.mindbalance.data.remote.request.IdentityRequest
 import com.salvamoreno.mindbalance.data.remote.response.TokenRemote
 import com.salvamoreno.mindbalance.domain.RepositoryInterface
@@ -13,6 +14,34 @@ class Repository @Inject constructor(
     private val localDataSource: LocalDataSourceInterface,
     private val remoteDataSource: RemoteDataSourceInterface,
 ) : RepositoryInterface {
+    override suspend fun signIn(email: String, password: String): TokenRemote {
+        // Save information
+        localDataSource.saveEmail(email)
+        localDataSource.savePassword(password)
+
+        // Api call
+        val remoteToken: TokenRemote = remoteDataSource.signIn()
+
+        return if (remoteToken.accessToken.isNotEmpty()) {
+            // Save tokens
+            localDataSource.saveAccessToken(remoteToken.accessToken)
+            localDataSource.saveRefreshToken(remoteToken.refreshToken)
+
+            remoteToken
+        } else {
+            remoteToken
+        }
+    }
+
+    override suspend fun changePassword(changePasswordRequest: ChangePasswordRequest) {
+        // Api call
+        val remoteToken: TokenRemote = remoteDataSource.changePassword(changePasswordRequest)
+
+        // Save tokens
+        localDataSource.saveAccessToken(remoteToken.accessToken)
+        localDataSource.saveRefreshToken(remoteToken.refreshToken)
+    }
+
     override suspend fun confirmIdentity(identityRequest: IdentityRequest) {
         // Api call
         val remoteToken: TokenRemote = remoteDataSource.confirmIdentity(identityRequest)

@@ -9,4 +9,6 @@ interface LocalDataSourceInterface {
     fun getEmail(): String
     fun saveDNI(dni: String)
     fun getDNI(): String
+    fun savePassword(password: String)
+    fun getPassword(): String
 }

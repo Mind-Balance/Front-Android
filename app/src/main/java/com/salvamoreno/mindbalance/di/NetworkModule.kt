@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -32,7 +33,23 @@ class NetworkModule {
     fun providesOkHttpClient(sharedPreferencesService: SharedPreferencesService): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor { chain ->
             val originalRequest = chain.request()
-            if (originalRequest.url.encodedPath.contains("identity")) {
+            if (originalRequest.url.encodedPath.contains("signin")) {
+                val email = sharedPreferencesService.getEmail()
+                val password = sharedPreferencesService.getPassword()
+                val credentials = Credentials.basic(email, password)
+                val firstHeaderRequest =
+                    originalRequest.newBuilder().addHeader("MindBalance-ApiKey", API_KEY).build()
+                val secondHeaderRequest = firstHeaderRequest.newBuilder().addHeader("Authorization", credentials).build()
+                chain.proceed(secondHeaderRequest)
+            } else if (originalRequest.url.encodedPath.contains("change")) {
+                val email = sharedPreferencesService.getEmail()
+                val password = sharedPreferencesService.getPassword()
+                val credentials = Credentials.basic(email, password)
+                val firstHeaderRequest =
+                    originalRequest.newBuilder().addHeader("MindBalance-ApiKey", API_KEY).build()
+                val secondHeaderRequest = firstHeaderRequest.newBuilder().addHeader("Authorization", credentials).build()
+                chain.proceed(secondHeaderRequest)
+            } else if (originalRequest.url.encodedPath.contains("identity")) {
                 val newRequest =
                     originalRequest.newBuilder().addHeader("MindBalance-ApiKey", API_KEY).build()
                 chain.proceed(newRequest)
