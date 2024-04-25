@@ -59,6 +59,11 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:2.48")
     //implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    // Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")

@@ -13,14 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.salvamoreno.mindbalance.ui.common.customComposableViews.BackIcon
-import com.salvamoreno.mindbalance.ui.common.customComposableViews.DNITextField
-import com.salvamoreno.mindbalance.ui.common.customComposableViews.EmailTextField
 import com.salvamoreno.mindbalance.ui.common.customComposableViews.NormalButton
-import com.salvamoreno.mindbalance.ui.passForgotten.onConfirmIdentity
 import com.salvamoreno.mindbalance.ui.theme.loginPrimary
 
 @Composable
